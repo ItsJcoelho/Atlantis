@@ -23,6 +23,9 @@
       <li class="nav-item">
         <router-link :to="{ name: 'ranking' }" :class="{ 'nav-link': true }">Ranking</router-link>
       </li>
+      <li class="nav-item">
+        <router-link :to="{ name: 'createEvent' }" :class="{ 'nav-link': true }">Criar Evento</router-link>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown
@@ -96,6 +99,7 @@ h1{
 }
 label{
   color: #025E73;
+  font-size: 20px;
 }
 
 </style>

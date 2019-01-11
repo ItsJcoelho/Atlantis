@@ -140,6 +140,18 @@ export default new Vuex.Store({
       )
       console.log(topTen)
       return topTen.reverse()
+    },
+    verifyEvent: (state) => (event) => {
+      let result = true
+      for (let i = 0; i < state.events.length; i++) {
+        if (state.events[i].name == event.name) {
+          result = false
+        }
+      }
+      if(result){
+        state.events.push(event)
+      }
+      return result
     }
     
   },
