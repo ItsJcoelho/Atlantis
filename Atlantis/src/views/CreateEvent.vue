@@ -84,7 +84,8 @@ export default {
                 poster: this.poster,
                 speaker: this.speaker,
                 creatorId: this.userLogged,
-                participants: []
+                participants: [],
+                comments: []
             }
             let result = this.$store.getters.verifyEvent(event)
             if(result){

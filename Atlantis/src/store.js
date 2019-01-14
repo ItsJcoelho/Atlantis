@@ -6,9 +6,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     events: [
-      {id: 0,date: "10-12-2019",name:"DRIVE",capacity: 50, category: "Workshop" , course: "Tsiw" ,poster: "",speaker: "Hugo Santos",creatorId: 1 ,participants: [2]},
-      {id: 1,date: "10-12-2019",name:"UNLOCK",capacity: 50, category: "Seminario" , course: "Design" ,poster: "",speaker: "Tiago Santos",creatorId: 4 ,participants: []},
-      {id: 2,date: "10-12-2019",name:"MAX",capacity: 30, category: "Seminario" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 7 ,participants: []}
+      {id: 0,date: "10-12-2019",name:"DRIVE",capacity: 50, category: "Workshop" , course: "Tsiw" ,poster: "",speaker: "Hugo Santos",creatorId: 1 ,participants: [2], comments: []},
+      {id: 1,date: "10-12-2019",name:"UNLOCK",capacity: 50, category: "Seminario" , course: "Design" ,poster: "",speaker: "Tiago Santos",creatorId: 4 ,participants: [], comments: []},
+      {id: 2,date: "10-12-2019",name:"MAX",capacity: 30, category: "Seminario" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 7 ,participants: [], comments: []}
 
     ],
     users: [
@@ -40,8 +40,20 @@ export default new Vuex.Store({
     userId: localStorage.getItem("userLogged")
     
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    SET_COMMENT(state, payload) {
+      for (let i = 0; i < state.events.length; i++) {
+        if (state.events[i].id == payload.eventId) {
+          state.events[i].comments.push(payload.opinion)
+        }
+      }
+    }
+  },
+  actions: {
+    set_comment(context, payload) {
+      context.commit("SET_COMMENT", payload);
+    }
+  },
   getters:{
     login: (state) => (userLog) => {
       let confirm = false
@@ -152,7 +164,7 @@ export default new Vuex.Store({
         state.events.push(event)
       }
       return result
-    }
+    },
     
   },
 });

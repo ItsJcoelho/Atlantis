@@ -5,6 +5,7 @@ import Login from "./views/Login.vue"
 import SignUp from "./views/SignUp.vue"
 import Ranking from "./views/Ranking.vue"
 import CreateEvent from "./views/CreateEvent.vue"
+import InfoEvents from "./views/InfoEvents.vue"
 
 Vue.use(Router);
 
@@ -34,6 +35,11 @@ export default new Router({
       path: "/createEvent",
       name: "createEvent",
       component: CreateEvent
+    },
+    {
+      path: "/infoEvents/:id",
+      name: "infoEvents",
+      component: InfoEvents
     }
   ]
 });

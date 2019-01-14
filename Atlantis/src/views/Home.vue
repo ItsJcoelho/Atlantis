@@ -32,7 +32,7 @@
                         <h6 class="card-subtitle mb-2 text-muted">{{event.course}}</h6>
                         <p class="card-text">{{event.category}} com a capacidade de {{event.capacity}} participantes, O orador de este evento é {{event.speaker}}</p>
                         <a href="#" class="card-link" v-if="userLogged != 0" v-on:click="subscribe(event.id)">Inscrever-me</a>
-                        <a href="#" class="card-link">Mais Informações</a>
+                        <router-link :to="{ name: 'infoEvents', params: { id: event.id } }" tag="button" :class="{'card-link': true}">more info</router-link>
                     </div>
                 </div>
             </div>
