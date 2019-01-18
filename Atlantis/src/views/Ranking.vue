@@ -16,7 +16,7 @@
             </thead>
             <tbody>
                 <tr v-for="(user, index) in users" :key="index">
-                    <th>{{user.id}}</th>
+                    <th>{{index + 1 }}</th>
                     <td>{{user.name}}</td>
                     <td>{{user.xp}}</td>
                 </tr>

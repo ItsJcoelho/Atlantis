@@ -8,7 +8,12 @@ export default new Vuex.Store({
     events: [
       {id: 0,date: "10-12-2019",name:"DRIVE",capacity: 50, category: "Workshop" , course: "Tsiw" ,poster: "",speaker: "Hugo Santos",creatorId: 1 ,participants: [2], comments: []},
       {id: 1,date: "10-12-2019",name:"UNLOCK",capacity: 50, category: "Seminario" , course: "Design" ,poster: "",speaker: "Tiago Santos",creatorId: 4 ,participants: [], comments: []},
-      {id: 2,date: "10-12-2019",name:"MAX",capacity: 30, category: "Seminario" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 7 ,participants: [], comments: []}
+      {id: 2,date: "10-12-2019",name:"MAX",capacity: 30, category: "Seminario" , course: "Restauração" ,poster: "",speaker: "Ricardo Queirós",creatorId: 7 ,participants: [], comments: []},
+      {id: 3,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Hotelaria" ,poster: "",speaker: "Ricardo Queirós",creatorId: 7 ,participants: [], comments: []},
+      {id: 4,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Multimédia" ,poster: "",speaker: "Ricardo Queirós",creatorId: 7 ,participants: [], comments: []},
+      {id: 5,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 7 ,participants: [], comments: []},
+      {id: 6,date: "10-12-2019",name:"MAX",capacity: 30, category: "Exposição" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 7 ,participants: [], comments: []},
+
 
     ],
     users: [
@@ -18,12 +23,18 @@ export default new Vuex.Store({
 
     ],
     categories: [
-      {id: 0,name: "Workshop",},
-      {id: 1,name: "Seminario",}
+      {id: 0,name: "Workshop"},
+      {id: 1,name: "Seminario"},
+      {id: 2,name: "Palestra"},
+      {id: 3,name: "Exposição"}
     ],
     courses: [
-      {id: 0,name: "Tsiw",},
-      {id: 0,name: "Design",}
+      {id: 0,name: "Tsiw"},
+      {id: 1,name: "Design"},
+      {id: 2,name: "Multimédia"},
+      {id: 3,name: "Design Industrial"},
+      {id: 4,name: "Hotelaria"},
+      {id: 5,name: "Restauração"}
     ],
     challenges:[{
       id: 1,
@@ -164,6 +175,50 @@ export default new Vuex.Store({
         state.events.push(event)
       }
       return result
+    },
+    GetArrayCoursesNamesForGrafs(state) {
+      let send = []
+      for (let i = 0; i < state.courses.length; i++) {
+        send.push(state.courses[i].name)
+        
+      }
+      return send
+    },
+    GetArrayCategoriesNamesForGrafs(state) {
+      let send = []
+      for (let i = 0; i < state.categories.length; i++) {
+        send.push(state.categories[i].name)
+        
+      }
+      return send
+    },
+    GetDataCoursesForCharts(state) {
+      let send = []
+      let counter = 0
+      for (let i = 0; i < state.courses.length; i++) {
+        for (let j = 0; j < state.events.length; j++) {
+          if (state.courses[i].name == state.events[j].course) {
+            counter++
+          }
+        }
+        send.push(counter)
+        counter = 0
+      }
+      return send
+    },
+    GetDataCategoriesForCharts(state) {
+      let send = []
+      let counter = 0
+      for (let i = 0; i < state.categories.length; i++) {
+        for (let j = 0; j < state.events.length; j++) {
+          if (state.categories[i].name == state.events[j].category) {
+            counter++
+          }
+        }
+        send.push(counter)
+        counter = 0
+      }
+      return send
     },
     
   },

@@ -6,6 +6,7 @@ import SignUp from "./views/SignUp.vue"
 import Ranking from "./views/Ranking.vue"
 import CreateEvent from "./views/CreateEvent.vue"
 import InfoEvents from "./views/InfoEvents.vue"
+import Stats from "./views/Stats.vue"
 
 Vue.use(Router);
 
@@ -30,6 +31,11 @@ export default new Router({
       path: "/ranking",
       name: "ranking",
       component: Ranking
+    },
+    {
+      path: "/stats",
+      name: "stats",
+      component: Stats
     },
     {
       path: "/createEvent",

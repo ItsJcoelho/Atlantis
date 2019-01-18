@@ -26,6 +26,9 @@
       <li class="nav-item">
         <router-link :to="{ name: 'createEvent' }" :class="{ 'nav-link': true }">Criar Evento</router-link>
       </li>
+      <li class="nav-item">
+        <router-link :to="{ name: 'stats' }" :class="{ 'nav-link': true }">Estatística</router-link>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown
@@ -100,6 +103,17 @@ h1{
 label{
   color: #025E73;
   font-size: 20px;
+}
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 800px;
+}
+.charts {
+  background: #e6f2ff;
 }
 
 </style>
