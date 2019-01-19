@@ -29,6 +29,12 @@
       <li class="nav-item">
         <router-link :to="{ name: 'stats' }" :class="{ 'nav-link': true }">Estatística</router-link>
       </li>
+      <li class="nav-item">
+        <router-link :to="{ name: 'userPage', params: { id: userLogged } }" :class="{ 'nav-link': true }">Página Utilizador</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link :to="{ name: 'backOffice' }" :class="{ 'nav-link': true }">BackOffice</router-link>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown

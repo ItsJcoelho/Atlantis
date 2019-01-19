@@ -17,10 +17,9 @@ export default new Vuex.Store({
 
     ],
     users: [
-      {id: 1,name: "Jorge",email: "jorge@jorge.com",password: "jorge",course: "tsiw",xp: 2,challenges: [1,3]},
-      {id: 2,name: "Mário",email: "mario@mario.com",password: "mario",course: "tsiw",xp: 0,challenges: [1,3]},
-      {id: 3,name: "Zé",email: "ze@ze.com",password: "ze",course: "tsiw",xp: 1,challenges: [1,3]},
-
+      {id: 1,name: "Jorge",email: "jorge@jorge.com",password: "jorge",course: "tsiw",xp: 2,challenges: [1,3],type: "admin"},
+      {id: 2,name: "Mário",email: "mario@mario.com",password: "mario",course: "tsiw",xp: 0,challenges: [1,3],type: "docente"},
+      {id: 3,name: "Zé",email: "ze@ze.com",password: "ze",course: "tsiw",xp: 1,challenges: [],type: "normal",},
     ],
     categories: [
       {id: 0,name: "Workshop"},
@@ -58,11 +57,21 @@ export default new Vuex.Store({
           state.events[i].comments.push(payload.opinion)
         }
       }
+    },
+    CHANGE_TYPE(state, payload) {
+      for (let i = 0; i < state.users.length; i++) {
+          if (state.users[i].id == payload.userId) {
+            state.users[i].type = payload.type
+          } 
+      }
     }
   },
   actions: {
     set_comment(context, payload) {
       context.commit("SET_COMMENT", payload);
+    },
+    change_type(context, payload) {
+      context.commit("CHANGE_TYPE", payload)
     }
   },
   getters:{
@@ -219,6 +228,9 @@ export default new Vuex.Store({
         counter = 0
       }
       return send
+    },
+    getUsers(state){
+      return state.users
     },
     
   },

@@ -7,6 +7,8 @@ import Ranking from "./views/Ranking.vue"
 import CreateEvent from "./views/CreateEvent.vue"
 import InfoEvents from "./views/InfoEvents.vue"
 import Stats from "./views/Stats.vue"
+import UserPage from "./views/UserPage.vue"
+import BackOffice from "./views/BackOffice.vue"
 
 Vue.use(Router);
 
@@ -46,6 +48,16 @@ export default new Router({
       path: "/infoEvents/:id",
       name: "infoEvents",
       component: InfoEvents
-    }
+    },
+    {
+      path: "/userPage/:id",
+      name: "userPage",
+      component: UserPage
+    },
+    {
+      path: "/backOffice",
+      name: "backOffice",
+      component: BackOffice
+    },
   ]
 });
