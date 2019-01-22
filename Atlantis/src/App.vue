@@ -121,6 +121,10 @@ canvas {
 .charts {
   background: #e6f2ff;
 }
+li {
+  list-style-type: none;
+}
+
 
 </style>
 

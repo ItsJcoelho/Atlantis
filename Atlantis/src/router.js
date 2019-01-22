@@ -9,6 +9,8 @@ import InfoEvents from "./views/InfoEvents.vue"
 import Stats from "./views/Stats.vue"
 import UserPage from "./views/UserPage.vue"
 import BackOffice from "./views/BackOffice.vue"
+import MyEvents from "./views/MyEvents.vue"
+import AreaDocente from "./views/AreaDocente.vue"
 
 Vue.use(Router);
 
@@ -52,12 +54,23 @@ export default new Router({
     {
       path: "/userPage/:id",
       name: "userPage",
-      component: UserPage
+      component: UserPage,
+
     },
     {
       path: "/backOffice",
       name: "backOffice",
       component: BackOffice
     },
+    {
+      path: "/myEvents/:id",
+      name: "myEvents-user",
+      component: MyEvents
+    },
+    {
+      path: "/areaDocente/:id",
+      name: "areaDocente-user",
+      component: AreaDocente
+    }
   ]
 });

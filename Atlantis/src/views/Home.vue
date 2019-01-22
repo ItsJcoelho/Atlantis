@@ -72,6 +72,8 @@ export default {
            let result = this.$store.getters.subscribe(subscribeInfo)
            if(result){
               alert("subscribe")
+              this.$store.dispatch("set_user_subscribe",subscribeInfo)
+              this.$store.dispatch("give_xp_increase",this.userLogged)
            }
            else{
               alert("Já está inscrito")
