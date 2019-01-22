@@ -1,5 +1,7 @@
 <template>
   <div class="login">
+    <!-- NAVBAR -->
+    <navBar/>
     <h1>Login Page</h1>
     <div class="container">
         <br>
@@ -22,12 +24,16 @@
   </div>
 </template>
 <script>
+import navBar from "@/components/navBar.vue";
 export default {
   data: function() {
     return {
         email: "",
         pass: "",
     };
+  },
+  components: {
+      navBar
   },
   methods: {
       login() {
@@ -36,9 +42,9 @@ export default {
               pass: this.pass,
           }
           let loginConfirm = this.$store.getters.login(userObject)
-          console.log(loginConfirm)
-          if(loginConfirm){
-              alert("login")
+          
+          if(loginConfirm.idUser != 0){
+              alert("Bem-vindo")
               this.$router.push({name: "home"})
           }
           else{

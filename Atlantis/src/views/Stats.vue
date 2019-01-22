@@ -1,5 +1,7 @@
 <template>
     <div class="stats">
+    <!-- NAVBAR -->
+    <navBar/>
         <h1>Estatística</h1>
         <br>
         <br>
@@ -14,6 +16,7 @@
     </div>
 </template>
 <script>
+import navBar from "@/components/navBar.vue";
 import Chart from 'chart.js';
 export default {
     data() {
@@ -23,6 +26,9 @@ export default {
             labelsCategories: [],
             numbersCategories: []
         }
+    },
+    components:{
+        navBar
     },
     mounted() {
         this.labelsCourses = this.$store.getters.GetArrayCoursesNamesForGrafs

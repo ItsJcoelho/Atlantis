@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    
+    <!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">ATLANTIS</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -48,34 +49,14 @@
       </li>
     </ul>
   </div>
-</nav>
+</nav>-->
     <br/>
-    <transition name="router-anim" enter-active-class="animated zoomIn">
       <router-view/>
-    </transition>
   </div>
 </template>
-<script>
-export default {
-  data: function() {
-    return {
-        userLogged: 0,
-    };
-  },
-  created() {
-    this.userLogged = this.$store.getters.getUserId
-  },
-  methods: {
-    logOut() {
-      localStorage.setItem('userLogged', 0)
-      this.userLogged = 0
-      this.$router.push({name: "login"})
-    }
-  },
-}
-</script>
+
 <style>
-@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css";
+
 
 #app {
   font-family: "Franklin Gothic", Helvetica, Arial, sans-serif;

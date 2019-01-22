@@ -1,5 +1,7 @@
 <template>
   <div class="signUp">
+    <!-- NAVBAR -->
+    <navBar/>
     <h1>Sign Up</h1>
         <div class="row justify-content-center">
             <div class="col-4">
@@ -38,6 +40,7 @@
   </div>
 </template>
 <script>
+import navBar from "@/components/navBar.vue";
 export default {
   data: function() {
     return {
@@ -48,6 +51,9 @@ export default {
         selectedCourse: "",
         confirmPass: "",
     };
+  },
+  components: {
+      navBar
   },
   created() {
     this.courses = this.$store.getters.getCourses

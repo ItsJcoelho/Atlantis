@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    <!-- NAVBAR -->
+    <navBar/>
+    <br>
     <div class="container">
     <h1>Bem Vindo ao Atlantis</h1>
     <h4>Gestor de eventos</h4>
@@ -43,9 +46,12 @@
 
 <script>
 // @ is an alias to /src
-
+import navBar from "@/components/navBar.vue";
 export default {
   name: "home",
+  components: {
+      navBar
+  },
   data: function() {
     return {
         events: "",

@@ -1,5 +1,7 @@
 <template>
     <div class="MyEvents">
+    <!-- NAVBAR -->
+    <navBar/>
         <h1>Meus Eventos</h1>
         <br>
         <br>
@@ -20,6 +22,7 @@
     </div>
 </template>
 <script>
+import navBar from "@/components/navBar.vue";
 export default {
     data() {
         return {
@@ -27,6 +30,9 @@ export default {
             myEvents: []
             
         }
+    },
+    components: {
+        navBar
     },
     created() {
         this.myEvents = this.$store.getters.getMyEvents(this.idUser)
@@ -41,6 +47,7 @@ export default {
             if (response) {
                 this.$store.dispatch("remove_subscribe",send)
             }
+            this.myEvents = this.$store.getters.getMyEvents(this.idUser)
             
         }
     },

@@ -1,5 +1,7 @@
 <template>
     <div class="BackOffice">
+    <!-- NAVBAR -->
+    <navBar/>
         <h1>Espaço do Administrador</h1>
         <table class="table">
             <thead>
@@ -38,6 +40,7 @@
     </div>
 </template>
 <script>
+import navBar from "@/components/navBar.vue";
 export default {
     data() {
         return {
@@ -46,6 +49,9 @@ export default {
             changeType: "",
             activeEdit: false
         }
+    },
+    components: {
+      navBar
     },
     created() {
         this.users = this.$store.getters.getUsers

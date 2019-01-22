@@ -1,5 +1,7 @@
 <template>
   <div class="create-event">
+   <!-- NAVBAR -->
+    <navBar/>
     <h1>This is The create event Page</h1>
     <br>
     <div class="container">
@@ -52,6 +54,7 @@
   </div>
 </template>
 <script>
+import navBar from "@/components/navBar.vue";
 export default {
     data: function() {
     return {
@@ -66,6 +69,9 @@ export default {
         selectedCourse: "",
         selectedCategory:""
     };
+    },
+    components: {
+        navBar
     },
     created() {
         this.courses = this.$store.getters.getCourses

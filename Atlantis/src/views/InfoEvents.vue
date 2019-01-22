@@ -1,5 +1,7 @@
 <template>
   <div class="about">
+    <!-- NAVBAR -->
+    <navBar/>
     <div class="container">
         <h1>{{getEvent($route.params.id).name}}</h1>
         <h2>{{getEvent($route.params.id).category}}</h2>
@@ -50,6 +52,7 @@
   </div>
 </template>
 <script>
+import navBar from "@/components/navBar.vue";
 export default {
     data() {
         return {
@@ -60,6 +63,9 @@ export default {
             thisEvent: "",
             userLogged: "",
         }
+    },
+    components: {
+        navBar
     },
     created() {
         this.events = this.$store.getters.getEvents;

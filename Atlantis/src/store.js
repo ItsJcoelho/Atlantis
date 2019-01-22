@@ -36,14 +36,17 @@ export default new Vuex.Store({
       {id: 5,name: "Restauração"}
     ],
     challenges:[
-      {id: 1,name: "",xpQuantity: 100,goal: 5,completed: false},{id: 2,name: "",xpQuantity: 200,goal: 10,completed: false},{id: 2,name: "",xpQuantity: 400,goal: 20,completed: false},
+      {id: 1,name: "",xpQuantity: 100,goal: 5,completed: false},
+      {id: 2,name: "",xpQuantity: 200,goal: 10,completed: false},
+      {id: 2,name: "",xpQuantity: 400,goal: 20,completed: false},
     ],
     notifications: [{
       id: 0,
       name: "",
       description: ""
     }],
-    userId: localStorage.getItem("userLogged")
+    userId: 0,
+    userType: ""
     
   },
   mutations: {
@@ -111,6 +114,10 @@ export default new Vuex.Store({
           alert("Evento Removido")
         }
       }
+    },
+    LOG_OUT(state){
+      state.userId = 0
+      state.userType = ""
     }
 
 
@@ -139,21 +146,24 @@ export default new Vuex.Store({
     },
     remove_event(context,payload){
       context.commit("REMOVE_EVENT",payload)
+    },
+    log_out(context){
+      context.commit("LOG_OUT")
     }
   },
   getters:{
     login: (state) => (userLog) => {
-      let confirm = false
+      let send = {
+        idUser = 0,
+        idType = ""
+      }
       for (let i = 0; i < state.users.length; i++) {
         if (state.users[i].email == userLog.email && state.users[i].password == userLog.pass) {
-          confirm = true
-          state.userId = state.users[i].id
-          localStorage.setItem('userLogged', state.userId)
+          send.idUser = state.users[i].id
+          send.idType = state.users[i].type
         }
-        
-
       }
-      return confirm
+      return send
     },
     signUp: (state) => (createUser) => {
       let msg = ""
@@ -319,7 +329,19 @@ export default new Vuex.Store({
         }
       }
       return sendEvents
+    },
+    GetEventUsers: (state) => (participants) => {
+      let send = []
+      for (let i = 0; i < participants.length; i++) {
+       for (let j = 0; j < state.users.length; j++) {
+         if (participants[i] == state.users[j].id) {
+           send.push(state.users[j])
+         }
+       }
+      }
+      return send
     }
+
     
   },
 });

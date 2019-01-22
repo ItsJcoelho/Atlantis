@@ -1,5 +1,7 @@
 <template>
-
+<div class="userpage">
+    <!-- NAVBAR -->
+    <navBar/>
 <div class="container bootstrap snippet">
     <div class="row">
         <div class="col-sm-3">
@@ -67,11 +69,12 @@
    <br>
    <br>
 </div>
-
+</div>
 
 </template>
 
 <script>
+import navBar from "@/components/navBar.vue";
 export default {
     data() {
         return {
@@ -82,8 +85,11 @@ export default {
             conqueredAchievements: [],
             achivements :[],
             switchAchievements: true,
-            switchButton: "Conquistas por conquistar"
+            switchButton: "Conquistas Completas"
         }
+    },
+    components:{
+        navBar
     },
     created() {
         this.users = this.$store.getters.getUsers;
@@ -109,12 +115,12 @@ export default {
             if(this.switchAchievements){
                 this.switchAchievements = false
                 console.log(this.switchAchievements)
-                this.switchButton = "Conquistas Completas"
+                this.switchButton = "Conquistas por conquistar"
             }
             else {
                 this.switchAchievements = true
                 console.log(this.switchAchievements)
-                this.switchButton = "Conquistas por conquistar"
+                this.switchButton = "Conquistas Completas"
             }
             
         }

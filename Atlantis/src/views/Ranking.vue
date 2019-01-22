@@ -1,5 +1,7 @@
 <template>
     <div class="ranking">
+    <!-- NAVBAR -->
+    <navBar/>
     <br>
     <h1>Ranking</h1>
     <br>
@@ -26,12 +28,16 @@
     </div>
 </template>
 <script>
+import navBar from "@/components/navBar.vue";
 export default {
     data: function() {
     return {
         users: [],
         top: 3
     };
+    },
+    components: {
+        navBar
     },
     created() {
         this.users = this.$store.getters.getRankingByXp(top)
