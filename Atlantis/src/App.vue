@@ -106,7 +106,29 @@ li {
   list-style-type: none;
 }
 
-
+.changeBotao {
+  margin-right: 5px;
+}
+.card-img-top {
+  width: 100px;
+  height: 100px;
+}
+.rounded {
+  height: 256px
+}
+.col-sm-4 {
+  margin-bottom: 20px;
+}
+.btn{
+  margin-bottom: 5px
+}
+nav{
+  margin-top: -20px
+}
+.info{
+  width: 256px;
+  height: 256px;
+}
 </style>
 
 

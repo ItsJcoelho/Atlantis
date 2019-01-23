@@ -42,6 +42,7 @@
         <br>
         <div class="row">
             <div class="col-sm-4" v-for="(challenge, index) in thisUser.challenges" :key="index" v-if="!challenge.completed">
+                <img src="https://cdn4.iconfinder.com/data/icons/education-training/33/cup-512.png" class="card-img-top" alt="...">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2 text-muted">{{challenge.name}}</h6>
@@ -57,6 +58,7 @@
         <br>
         <div class="row">
             <div class="col-sm-4" v-for="(challenge, index) in thisUser.challenges" :key="index" v-if="challenge.completed">
+               <img src="https://cdn4.iconfinder.com/data/icons/education-training/33/cup-512.png" class="card-img-top" alt="...">
                <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <h6 class="card-subtitle mb-2 text-muted">{{challenge.name}}</h6>

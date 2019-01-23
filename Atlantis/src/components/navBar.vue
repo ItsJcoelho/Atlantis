@@ -23,28 +23,17 @@
             <li class="nav-item">
                 <router-link :to="{ name: 'ranking' }" :class="{ 'nav-link': true }">Ranking</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="userType == 'docente'">
                 <router-link :to="{ name: 'createEvent' }" :class="{ 'nav-link': true }">Criar Evento</router-link>
             </li>
             <li class="nav-item">
                 <router-link :to="{ name: 'stats' }" :class="{ 'nav-link': true }">Estatística</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="userLogged != 0">
                 <router-link :to="{ name: 'userPage', params: { id: userLogged } }" :class="{ 'nav-link': true }">Página Utilizador</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="userType == 'admin'">
                 <router-link :to="{ name: 'backOffice' }" :class="{ 'nav-link': true }">BackOffice</router-link>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-                </div>
             </li>
             </ul>
         </div>
@@ -61,10 +50,12 @@ export default {
   },
   created() {
     this.userLogged = this.$store.getters.getUserId
+    this.userType = this.$store.getters.GetUserType
   },
   methods: {
     logOut() {
       this.userLogged = 0
+      this.userType = ""
       this.$store.dispatch("log_out")
       this.$router.push({name: "login"})
     }

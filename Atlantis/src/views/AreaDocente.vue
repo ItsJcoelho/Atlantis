@@ -2,12 +2,14 @@
     <div class="AreaDocente">
         <!-- NAVBAR -->
         <navBar/>
+        <br>
         <h1>Área do Docente</h1>
         <br>
         <div class="container">
             <div class="row">
                 <div class="col-sm-4" v-for="(userEvent, index) in userEvents" :key="index">
                     <div class="card" style="width: 18rem;">
+                    <img v-bind:src="userEvent.poster" class="card-img rounded" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{userEvent.name}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{userEvent.course}}</h6>

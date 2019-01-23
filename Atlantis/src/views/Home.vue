@@ -3,6 +3,9 @@
     <!-- NAVBAR -->
     <navBar/>
     <br>
+    <div class="imagem">
+            <img src="" class="card-img info" alt="...">
+    </div>
     <div class="container">
     <h1>Bem Vindo ao Atlantis</h1>
     <h4>Gestor de eventos</h4>
@@ -30,12 +33,13 @@
         <div class="row">
             <div class="col-sm-4" v-for="(event, index) in filteredEvents" :key="index">
                 <div class="card" style="width: 18rem;">
+                <img v-bind:src="event.poster" class="card-img rounded" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">{{event.name}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{event.course}}</h6>
                         <p class="card-text">{{event.category}} com a capacidade de {{event.capacity}} participantes, O orador de este evento é {{event.speaker}}</p>
-                        <a href="#" class="card-link" v-if="userLogged != 0" v-on:click="subscribe(event.id)">Inscrever-me</a>
-                        <router-link :to="{ name: 'infoEvents', params: { id: event.id } }" tag="button" :class="{'card-link': true}">more info</router-link>
+                        <a href="#" class="btn btn-outline-success changeBotao" v-if="userLogged != 0" v-on:click="subscribe(event.id)">Inscrever-me</a>
+                        <router-link :to="{ name: 'infoEvents', params: { id: event.id } }" tag="button" :class="{'btn': true, 'btn-outline-info': true}">more info</router-link>
                     </div>
                 </div>
             </div>

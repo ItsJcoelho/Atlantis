@@ -3,6 +3,11 @@
     <!-- NAVBAR -->
     <navBar/>
     <div class="container">
+        <div class="imagem">
+            <img v-bind:src="getEvent($route.params.id).poster" class="card-img info" alt="...">
+        </div>
+        <br>
+        <br>
         <h1>{{getEvent($route.params.id).name}}</h1>
         <h2>{{getEvent($route.params.id).category}}</h2>
         <h4> Evento do Curso {{getEvent($route.params.id).course}}, tendo a capacidade
