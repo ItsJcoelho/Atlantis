@@ -55,7 +55,7 @@ export default {
   data: function() {
     return {
         events: "",
-        userLogged: localStorage.getItem('userLogged'),
+        userLogged: 0,
         categories: [],
         courses:[],
         filterCategorie: "all",
@@ -66,6 +66,7 @@ export default {
     this.events = this.$store.getters.getEvents
     this.categories = this.$store.getters.getCategories
     this.courses = this.$store.getters.getCourses
+    this.userLogged = this.$store.getters.getUserId
   },
   methods: {
     subscribe(id){

@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(user, index) in users" :key="index">
+                <tr v-for="(user, index) in showTop" :key="index">
                     <th>{{index + 1 }}</th>
                     <td>{{user.name}}</td>
                     <td>{{user.xp}}</td>
@@ -33,7 +33,8 @@ export default {
     data: function() {
     return {
         users: [],
-        top: 3
+        showTop: [],
+        top: 10
     };
     },
     components: {
@@ -41,6 +42,14 @@ export default {
     },
     created() {
         this.users = this.$store.getters.getRankingByXp(top)
+        if(this.users.length < 10){
+            this.showTop = this.users
+        }
+        else{
+            for(let i = 0; i < this.top; i++){
+                this.showTop.push(this.users[i])
+            }
+        }
     },
 }
 </script>

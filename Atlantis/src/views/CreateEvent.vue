@@ -2,7 +2,7 @@
   <div class="create-event">
    <!-- NAVBAR -->
     <navBar/>
-    <h1>This is The create event Page</h1>
+    <h1>Criar Evento</h1>
     <br>
     <div class="container">
         <div class="row justify-content-center">
@@ -81,7 +81,7 @@ export default {
     methods: {
         InsertEvent() {
             let event = {
-                id: this.$store.getters.getLastId,
+                id: this.$store.getters.GetLastIdOfEvents,
                 date: this.date,
                 name: this.name,
                 capacity: this.capacity,
@@ -95,10 +95,12 @@ export default {
             }
             let result = this.$store.getters.verifyEvent(event)
             if(result){
-                alert("Criado")
+                this.$store.dispatch("set_new_event",event)
+                console.log(event)
+                alert("O evento foi criado com sucesso")
             }
             else{
-                alert("Deu erro")
+                alert("Existe algum erro, por favor verifique os dados")
             }
         }
     },

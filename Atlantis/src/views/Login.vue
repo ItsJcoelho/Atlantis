@@ -42,9 +42,10 @@ export default {
               pass: this.pass,
           }
           let loginConfirm = this.$store.getters.login(userObject)
-          
+          console.log(loginConfirm)
           if(loginConfirm.idUser != 0){
               alert("Bem-vindo")
+              this.$store.dispatch("set_user_info",loginConfirm)
               this.$router.push({name: "home"})
           }
           else{

@@ -16,6 +16,7 @@
         <p> Neste momento estão inscritos no evento {{getEvent($route.params.id).participants.length}} </p>
         <br>
         <br>
+        <div class="comment" v-if="userLogged != 0">
         <div class="row">
             <div class="col-sm-12">
                  <label for="comment">Comentar</label>
@@ -28,24 +29,25 @@
                 <input type="number" class="form-control" id="rating" v-model="rating" min="1" max="5">
              </div>
         </div>
-        <br>
         <button type="button" class="btn btn-dark" v-on:click="addComment()">Comentar</button>
+        </div>
         <br>
-        <br>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Rating</th>
-                    <th scope="col">Comentário</th>
+            <br>
+            <br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Comentário</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(comment, index) in thisEvent.comments" :key="index">
+                    <td>{{comment.rating}}</td>
+                    <td>{{comment.comment}}</td>
                 </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(comment, index) in thisEvent.comments" :key="index">
-                <td>{{comment.rating}}</td>
-                <td>{{comment.comment}}</td>
-            </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         <br>
         <button type="button" class="btn btn-dak" v-on:click="back()">Voltar</button>
     </div>
@@ -61,7 +63,7 @@ export default {
             comment: "",
             rating:0,
             thisEvent: "",
-            userLogged: "",
+            userLogged: 0,
         }
     },
     components: {
@@ -70,6 +72,7 @@ export default {
     created() {
         this.events = this.$store.getters.getEvents;
         this.thisEvent = this.events.filter(event => event.id === this.eventId)[0];
+        this.userLogged = this.$store.getters.getUserId
     },
     methods: {
         getEvent(id){

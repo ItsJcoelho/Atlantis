@@ -50,6 +50,9 @@ export default {
         courses: [],
         selectedCourse: "",
         confirmPass: "",
+        id: 0,
+        challenges: []
+
     };
   },
   components: {
@@ -57,26 +60,32 @@ export default {
   },
   created() {
     this.courses = this.$store.getters.getCourses
+    this.id = this.$store.getters.getLastIdOfUsers
+    this.challenges = this.$store.getters.GetChallenges
   },
   methods: {
       signUp() {
           let user = {
-              id: this.$store.getters.getLastId,
+              id: this.id,
               name: this.name,
               email: this.email,
               password: this.pass,
               confirmPass: this.confirmPass,
               course: this.selectedCourse,
               xp: 0,
-              challenges: []
+              challenges: this.challenges,
+              type: "normal",
+              numberInscripton: 0
           }
           let signUpInfo = this.$store.getters.signUp(user)
-          if(signUpInfo == ""){
-            alert("registou")
+          console.log(signUpInfo)
+          if(signUpInfo != ""){
+            alert("Bem vindo ao Atlantis, Irá ser direcionado á zona de login")
+            this.$store.dispatch("set_new_user",signUpInfo)
             this.$router.push({name: "login"})
           }
           else {
-            alert(signUpInfo)
+            alert("O seu registo contem erros, verifique os seus dados")
           }
           
       }

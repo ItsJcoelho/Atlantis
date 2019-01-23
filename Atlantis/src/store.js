@@ -6,13 +6,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     events: [
-      {id: 0,date: "10-12-2019",name:"DRIVE",capacity: 50, category: "Workshop" , course: "Tsiw" ,poster: "",speaker: "Hugo Santos",creatorId: 2 ,participants: [2,1], comments: []},
-      {id: 1,date: "10-12-2019",name:"UNLOCK",capacity: 50, category: "Seminario" , course: "Design" ,poster: "",speaker: "Tiago Santos",creatorId: 2 ,participants: [2], comments: []},
-      {id: 2,date: "10-12-2019",name:"MAX",capacity: 30, category: "Seminario" , course: "Restauração" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [1], comments: []},
-      {id: 3,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Hotelaria" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [2], comments: []},
-      {id: 4,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Multimédia" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [1], comments: []},
-      {id: 5,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [2], comments: []},
-      {id: 6,date: "10-12-2019",name:"MAX",capacity: 30, category: "Exposição" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [1], comments: []},
+      {id: 1,date: "10-12-2019",name:"DRIVE",capacity: 50, category: "Workshop" , course: "Tsiw" ,poster: "",speaker: "Hugo Santos",creatorId: 2 ,participants: [2,1], comments: []},
+      {id: 2,date: "10-12-2019",name:"UNLOCK",capacity: 50, category: "Seminario" , course: "Design" ,poster: "",speaker: "Tiago Santos",creatorId: 2 ,participants: [2], comments: []},
+      {id: 3,date: "10-12-2019",name:"MAX",capacity: 30, category: "Seminario" , course: "Restauração" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [1], comments: []},
+      {id: 4,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Hotelaria" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [2], comments: []},
+      {id: 5,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Multimédia" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [1], comments: []},
+      {id: 6,date: "10-12-2019",name:"MAX",capacity: 30, category: "Palestra" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [2], comments: []},
+      {id: 7,date: "10-12-2019",name:"MAX",capacity: 30, category: "Exposição" , course: "Tsiw" ,poster: "",speaker: "Ricardo Queirós",creatorId: 2 ,participants: [1], comments: []},
 
 
     ],
@@ -22,23 +22,23 @@ export default new Vuex.Store({
       {id: 3,name: "Zé",email: "ze@ze.com",password: "ze",course: "tsiw",xp: 1,challenges: [{id: 1,name: "Inscreva-se em 5 eventos",xpQuantity: 100,goal: 5,completed: false},{id: 2,name: "Inscreva-se em 10 eventos",xpQuantity: 200,goal: 10,completed: false},{id: 2,name: "Inscreva-se em 20 eventos",xpQuantity: 400,goal: 20,completed: false}],type: "normal",numberInscripton: 4},
     ],
     categories: [
-      {id: 0,name: "Workshop"},
-      {id: 1,name: "Seminario"},
-      {id: 2,name: "Palestra"},
-      {id: 3,name: "Exposição"}
+      {id: 1,name: "Workshop"},
+      {id: 2,name: "Seminario"},
+      {id: 3,name: "Palestra"},
+      {id: 4,name: "Exposição"}
     ],
     courses: [
-      {id: 0,name: "Tsiw"},
-      {id: 1,name: "Design"},
-      {id: 2,name: "Multimédia"},
-      {id: 3,name: "Design Industrial"},
-      {id: 4,name: "Hotelaria"},
-      {id: 5,name: "Restauração"}
+      {id: 1,name: "Tsiw"},
+      {id: 2,name: "Design"},
+      {id: 3,name: "Multimédia"},
+      {id: 4,name: "Design Industrial"},
+      {id: 5,name: "Hotelaria"},
+      {id: 6,name: "Restauração"}
     ],
     challenges:[
-      {id: 1,name: "",xpQuantity: 100,goal: 5,completed: false},
-      {id: 2,name: "",xpQuantity: 200,goal: 10,completed: false},
-      {id: 2,name: "",xpQuantity: 400,goal: 20,completed: false},
+      {id: 1,name: "Inscreva-se em 5 eventos",xpQuantity: 100,goal: 5,completed: false},
+      {id: 2,name: "Inscreva-se em 10 eventos",xpQuantity: 200,goal: 10,completed: false},
+      {id: 2,name: "Inscreva-se em 20 eventos",xpQuantity: 400,goal: 20,completed: false},
     ],
     notifications: [{
       id: 0,
@@ -118,6 +118,16 @@ export default new Vuex.Store({
     LOG_OUT(state){
       state.userId = 0
       state.userType = ""
+    },
+    SET_USER_INFO(state,payload){
+      state.userId = payload.idUser
+      state.userType = payload.idType
+    },
+    SET_NEW_USER(state,payload){
+      state.users.push(payload)
+    },
+    SET_NEW_EVENT(state,payload){
+      state.events.push(payload)
     }
 
 
@@ -149,13 +159,23 @@ export default new Vuex.Store({
     },
     log_out(context){
       context.commit("LOG_OUT")
+    },
+    set_user_info(context,payload){
+      context.commit("SET_USER_INFO",payload)
+    },
+    set_new_user(context,payload){
+      context.commit("SET_NEW_USER",payload)
+    },
+    set_new_event(context,payload){
+      context.commit("SET_NEW_EVENT",payload)
     }
+
   },
   getters:{
     login: (state) => (userLog) => {
       let send = {
-        idUser = 0,
-        idType = ""
+        idUser: 0,
+        idType: ""
       }
       for (let i = 0; i < state.users.length; i++) {
         if (state.users[i].email == userLog.email && state.users[i].password == userLog.pass) {
@@ -163,35 +183,37 @@ export default new Vuex.Store({
           send.idType = state.users[i].type
         }
       }
+      console.log(send)
       return send
     },
     signUp: (state) => (createUser) => {
+      let insertUser = ""
       let msg = ""
       //verificar se existe algum email
       for (let i = 0; i < state.users.length; i++) {
           if(state.users[i].email == createUser.email){
-            msg += "Email já existente \n"
+            msg += "error"
           }
       }
       //verificar se existe se as password coicidem
       if(createUser.password != createUser.confirmPass) {
-         msg += "Passwords não coicidem \n"
+         msg += "error"
       }
       if(msg == ""){
-        let insertUser = {
+        insertUser = {
           id: createUser.id,
           name: createUser.name,
           email: createUser.email,
           password: createUser.password,
           course: createUser.course,
           xp: createUser.xp,
-          challenges: createUser.challenges
+          challenges: createUser.challenges,
+          type: createUser.type,
+          numberInscripton: createUser.numberInscripton
         }
-        state.users.push(insertUser)
-        console.log(state.users)
       }
 
-      return msg
+      return insertUser
 
     },
     getCourses(state){
@@ -206,10 +228,10 @@ export default new Vuex.Store({
     getUserId(state){
       return state.userId
     },
-    getLastId(state){
+    getLastIdOfUsers(state){
       let lastId = 0
         if (state.users.length > 0) {
-          lastId = state.users[1].userId + 1
+          lastId = state.users[state.users.length - 1].id + 1
           console.log(lastId)
         }
       return lastId
@@ -246,18 +268,15 @@ export default new Vuex.Store({
           else return 0;
         }
       )
-      console.log(topTen)
       return topTen.reverse()
     },
     verifyEvent: (state) => (event) => {
       let result = true
       for (let i = 0; i < state.events.length; i++) {
+        console.log(state.events[i].name)
         if (state.events[i].name == event.name) {
           result = false
         }
-      }
-      if(result){
-        state.events.push(event)
       }
       return result
     },
@@ -340,6 +359,16 @@ export default new Vuex.Store({
        }
       }
       return send
+    },
+    GetChallenges(state){
+      return state.challenges
+    },
+    GetLastIdOfEvents(state){
+      let lastId
+      if(state.events.length > 0 ){
+        lastId = state.events[state.events.length- 1].id + 1
+      }
+      return lastId
     }
 
     
