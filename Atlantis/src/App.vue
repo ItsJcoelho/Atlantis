@@ -129,6 +129,14 @@ nav{
   width: 256px;
   height: 256px;
 }
+.imagem{
+  background: white;
+  margin-top: -30px;
+}
+.inside{
+  width:10%;
+  height:10%;
+}
 </style>
 
 

@@ -4,8 +4,9 @@
     <navBar/>
     <br>
     <div class="imagem">
-            <img src="" class="card-img info" alt="...">
+            <img src="../assets/logoAtlantis.png" class="card-img info" alt="...">
     </div>
+    <br>
     <div class="container">
     <h1>Bem Vindo ao Atlantis</h1>
     <h4>Gestor de eventos</h4>

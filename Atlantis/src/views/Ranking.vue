@@ -3,6 +3,13 @@
     <!-- NAVBAR -->
     <navBar/>
     <br>
+    <div class="imagem">
+            <br>
+            <img src="https://png.pngtree.com/svg/20170918/ranking_706934.png" class="inside" alt="...">
+            <br>
+            <br>
+    </div>
+    <br>
     <h1>Ranking</h1>
     <br>
     <div class="container">

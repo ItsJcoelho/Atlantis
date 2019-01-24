@@ -2,6 +2,14 @@
     <div class="stats">
     <!-- NAVBAR -->
     <navBar/>
+    <div class="imagem">
+            <br>
+            <br>
+            <img src="https://png.pngtree.com/svg/20161222/stock_market_ranking_18666.png" class="inside" alt="...">
+            <br>
+            <br>
+    </div>
+    <br>
         <h1>Estatística</h1>
         <br>
         <br>
