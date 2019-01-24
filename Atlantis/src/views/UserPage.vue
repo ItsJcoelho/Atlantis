@@ -25,18 +25,20 @@
     <div class="row">
         <div class="col-sm-3">
             <ul class="list-group">
-                <li class="list-group-item text-muted">Informações<i class="fa fa-dashboard fa-1x"></i></li>
+                <li class="list-group-item text-muted">Páginas<i class="fa fa-dashboard fa-1x"></i></li>
                 <li class="list-group-item text-right"><span class="pull-left"><router-link :to="{ name: 'myEvents-user',params: { id: userId } }" :class="{ 'nav-link': true }">Minhas Inscrições</router-link></span></li>
                 <li class="list-group-item text-right" v-if="thisUser.type=='docente'"><span class="pull-left"><router-link :to="{ name: 'areaDocente-user',params: { id: userId } }" :class="{ 'nav-link': true }">Área do Docente</router-link></span></li>
             </ul>
         </div>
         <div class="col-sm-9 aling-self-center">
-            <ul>
-                <li>Email: {{getUser($route.params.id).name}}</li>
-                <br>
-                <li>Password: {{getUser($route.params.id).password}}</li>
-                <br>
-                <li>Curso: {{getUser($route.params.id).course}}</li>
+            <ul class="list-group">
+                <li class="list-group-item text-muted">Páginas<i class="fa fa-dashboard fa-1x"></i></li>
+                <li class="list-group-item text-left">Email: {{getUser($route.params.id).email}}</li>
+                
+                <li class="list-group-item text-left">Password: {{getUser($route.params.id).password}}</li>
+
+                <li class="list-group-item text-left">Curso: {{getUser($route.params.id).course}}</li>
+                <li class="list-group-item text-left">Nivel: {{level}}</li>
             </ul>
         </div>
     </div>
@@ -96,7 +98,8 @@ export default {
             conqueredAchievements: [],
             achivements :[],
             switchAchievements: true,
-            switchButton: "Conquistas Completas"
+            switchButton: "Conquistas Completas",
+            level: 0
         }
     },
     components:{
@@ -115,6 +118,8 @@ export default {
                 });
             }
         }
+        this.level = this.$store.getters.getUserLevel(this.thisUser.xp)
+        
         
 
     },

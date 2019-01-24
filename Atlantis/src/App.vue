@@ -54,7 +54,39 @@
       <router-view/>
   </div>
 </template>
-
+<script>
+export default {
+  data() {
+    return {
+      /*state: []*/
+    }
+  },
+  created() {
+    /*let sendState = {
+      events: JSON.parse(localStorage.getItem("events")),
+      users: JSON.parse(localStorage.getItem("users")),
+      courses: JSON.parse(localStorage.getItem("courses")),
+      categories: JSON.parse(localStorage.getItem("categories")),
+      notifications: JSON.parse(localStorage.getItem("notifications")),
+      challlenges: JSON.parse(localStorage.getItem("challenges")),
+      userId: JSON.parse(localStorage.getItem("userId")),
+      userType: JSON.parse(localStorage.getItem("userType"))
+    }
+    this.$store.dispatch("set_state", sendState)
+    this.state = this.$store.getters.getState*/
+  },
+  beforeDestroy() {
+    /*localStorage.setItem("events", JSON.stringify(this.state.events));
+    localStorage.setItem("users", JSON.stringify(this.state.users));
+    localStorage.setItem("courses", JSON.stringify(this.state.courses));
+    localStorage.setItem("categories", JSON.stringify(this.state.categories));
+    localStorage.setItem("notifications", JSON.stringify(this.state.notifications));
+    localStorage.setItem("challlenges", JSON.stringify(this.state.challenges));
+    localStorage.setItem("userId", JSON.stringify(this.state.userId));
+    localStorage.setItem("userType", JSON.stringify(this.state.userType));*/
+  },
+}
+</script>
 <style>
 
 

@@ -68,10 +68,10 @@ export default {
     };
   },
   created() {
-    this.events = this.$store.getters.getEvents
+    this.userLogged = this.$store.getters.getUserId
+    this.events = this.$store.getters.getNotSubscribedEvents(this.userLogged)
     this.categories = this.$store.getters.getCategories
     this.courses = this.$store.getters.getCourses
-    this.userLogged = this.$store.getters.getUserId
   },
   methods: {
     subscribe(id){
@@ -86,6 +86,7 @@ export default {
               alert("subscribe")
               this.$store.dispatch("set_user_subscribe",subscribeInfo)
               this.$store.dispatch("give_xp_increase",this.userLogged)
+              this.events = this.$store.getters.getNotSubscribedEvents(this.userLogged)
            }
            else{
               alert("Já está inscrito")
