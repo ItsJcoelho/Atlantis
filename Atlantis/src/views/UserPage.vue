@@ -109,6 +109,7 @@ export default {
         this.users = this.$store.getters.getUsers;
         this.userLogged = this.$store.getters.getUserId;
         this.thisUser = this.users.filter(user => this.userId == user.id)[0]
+        //verifica se completou as conquistas
         for(let i = 0; i < this.thisUser.challenges.length; i++){
             if(this.thisUser.numberInscripton >= this.thisUser.challenges[i].goal && !this.thisUser.challenges[i].completed){
                 this.$store.dispatch("completed_challenge", {
@@ -118,6 +119,7 @@ export default {
                 });
             }
         }
+        //devolve o nivel
         this.level = this.$store.getters.getUserLevel(this.thisUser.xp)
         console.log(this.thisUser.xp)
         
@@ -125,9 +127,11 @@ export default {
 
     },
     methods: {
+        //obter utilizador logado
         getUser(id){
             return this.users.filter(user => user.id == id)[0];
         },
+        //alternar entre conquistas completas e por completar
         alternate() {
             if(this.switchAchievements){
                 this.switchAchievements = false

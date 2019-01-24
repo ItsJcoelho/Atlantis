@@ -46,8 +46,8 @@
                <input type="number" class="form-control" id="capacityEvent" min="20" v-model="capacity" required>
             </div>
             <div class="col-sm-3">
-                <label for="posterEvent">Orador</label>
-                <input type="text" class="form-control" id="posterEvent" placeholder="Link do Poster" v-model="poster" required>
+                <label for="posterEvent">Poster</label>
+                <input type="link" class="form-control" id="posterEvent" placeholder="Link do Poster" v-model="poster" required>
             </div>
         </div>
         <br>
@@ -88,6 +88,7 @@ export default {
         this.userLogged = this.$store.getters.getUserId
     },
     methods: {
+        //funcao para inserir evento
         InsertEvent() {
             let event = {
                 id: this.$store.getters.GetLastIdOfEvents,

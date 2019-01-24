@@ -39,6 +39,7 @@ export default {
         navBar
     },
     mounted() {
+        //obter labels para os graficos
         this.labelsCourses = this.$store.getters.GetArrayCoursesNamesForGrafs
         this.numbersCourses = this.$store.getters.GetDataCoursesForCharts
         this.labelsCategories = this.$store.getters.GetArrayCategoriesNamesForGrafs

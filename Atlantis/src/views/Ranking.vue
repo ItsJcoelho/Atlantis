@@ -75,6 +75,7 @@ export default {
     created() {
         this.usersXp = this.$store.getters.getRankingByXp(top)
         console.log(this.usersXp)
+        //verifica se a quantidade de utilizadores é menor que 10 caso nao exista mais que 10 users
         if(this.usersXp.length < 10){
             this.showTopXp = this.usersXp
         }
@@ -95,6 +96,7 @@ export default {
         }
     },
     methods: {
+        //Para alternar entre tabelas 
         change(){
             if(!this.active){
                 this.active = true

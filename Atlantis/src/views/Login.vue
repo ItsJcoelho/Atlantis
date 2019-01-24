@@ -44,6 +44,7 @@ export default {
       navBar
   },
   methods: {
+      //função para logar 
       login() {
           let userObject = {
               email: this.email,

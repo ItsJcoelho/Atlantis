@@ -68,12 +68,14 @@ export default {
     };
   },
   created() {
+    //Obtem as informações 
     this.userLogged = this.$store.getters.getUserId
     this.events = this.$store.getters.getNotSubscribedEvents(this.userLogged)
     this.categories = this.$store.getters.getCategories
     this.courses = this.$store.getters.getCourses
   },
   methods: {
+    // metodo para subscrever a um evento
     subscribe(id){
         let subscribeInfo = {
           idUser: this.userLogged,
@@ -96,6 +98,7 @@ export default {
     }
   },
   computed: {
+    // filtros
     filteredEvents() {
             return this.events.filter(
                 (event) => {

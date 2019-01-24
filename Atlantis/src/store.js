@@ -179,6 +179,7 @@ export default new Vuex.Store({
 
   },
   getters:{
+    //verificar os dados do utilizador para logar, devolve o id e permissões
     login: (state) => (userLog) => {
       let send = {
         idUser: 0,
@@ -193,6 +194,7 @@ export default new Vuex.Store({
       console.log(send)
       return send
     },
+    //verifica os dados para criar conta, devolve o objeto do utilizador
     signUp: (state) => (createUser) => {
       let insertUser = ""
       let msg = ""
@@ -223,26 +225,31 @@ export default new Vuex.Store({
       return insertUser
 
     },
+    //devolve cursos
     getCourses(state){
       return state.courses
     },
+    //devolve categorias
     getCategories(state){
       return state.categories
     },
+    //devolve eventos
     getEvents(state){
       return state.events
     },
+    //devolve o id do utilizador
     getUserId(state){
       return state.userId
     },
+    //devolve o ultimo id dos utilizadores
     getLastIdOfUsers(state){
       let lastId = 0
         if (state.users.length > 0) {
           lastId = state.users[state.users.length - 1].id + 1
-          console.log(lastId)
         }
       return lastId
     },
+    //verifica se já está está inscrito, devolve uma flag 
     subscribe: (state) => (subscribeInfo) => {
       let eventToSubscribe
       let result = true
@@ -261,12 +268,13 @@ export default new Vuex.Store({
       if (!alreadySub) {
         for (let i = 0; i < state.events.length; i++) {
           if(i == eventToSubscribe &&alreadySub == false){
-            alert(state.events[i].participants)
+            
           }
         }
       }
       return result
     },
+    //obter ranking por xp
     getRankingByXp: (state) => (top) => {
       let topTen = state.users.sort(
         function orderByXp(a, b) {
@@ -277,16 +285,17 @@ export default new Vuex.Store({
       )
       return topTen.reverse()
     },
+    //verifica o registo do evento
     verifyEvent: (state) => (event) => {
       let result = true
       for (let i = 0; i < state.events.length; i++) {
-        console.log(state.events[i].name)
         if (state.events[i].name == event.name) {
           result = false
         }
       }
       return result
     },
+    //obter nomes dos cursos para os graficos 
     GetArrayCoursesNamesForGrafs(state) {
       let send = []
       for (let i = 0; i < state.courses.length; i++) {
@@ -295,6 +304,7 @@ export default new Vuex.Store({
       }
       return send
     },
+    //obter nomes das categorias para os graficos
     GetArrayCategoriesNamesForGrafs(state) {
       let send = []
       for (let i = 0; i < state.categories.length; i++) {
@@ -303,6 +313,7 @@ export default new Vuex.Store({
       }
       return send
     },
+    //devolve o numero de eventos por categoria
     GetDataCoursesForCharts(state) {
       let send = []
       let counter = 0
@@ -317,6 +328,7 @@ export default new Vuex.Store({
       }
       return send
     },
+    //devolve o numero de eventos por categoria
     GetDataCategoriesForCharts(state) {
       let send = []
       let counter = 0
@@ -331,9 +343,11 @@ export default new Vuex.Store({
       }
       return send
     },
+    //obter Utilizadores
     getUsers(state){
       return state.users
     },
+    //devolve os eventos inscritos por utilizadores
     getMyEvents: (state) => (id) => {
       let sendEvents = []
       for (let i = 0; i < state.events.length; i++) {
@@ -346,6 +360,7 @@ export default new Vuex.Store({
       }
       return sendEvents
     },
+    //Obter os eventos criados pelo utilizador
     GetUserCreatedEvents: (state) => (id) => {
       let sendEvents = []
       console.log(id)
@@ -356,6 +371,7 @@ export default new Vuex.Store({
       }
       return sendEvents
     },
+    //obter os Paticipantes de um evento já inscrito
     GetEventUsers: (state) => (participants) => {
       let send = []
       for (let i = 0; i < participants.length; i++) {
@@ -367,9 +383,11 @@ export default new Vuex.Store({
       }
       return send
     },
+    //obter desafios
     GetChallenges(state){
       return state.challenges
     },
+    //obter o ultimo id dos eventos
     GetLastIdOfEvents(state){
       let lastId
       if(state.events.length > 0 ){
@@ -377,9 +395,11 @@ export default new Vuex.Store({
       }
       return lastId
     },
+    //obter o tipo de utilizador
     GetUserType(state){
       return state.userType
     },
+    //obter o nivel do utilizador
     getUserLevel:(state)=>(xp)=>{
       let level = 1
       if (xp > 10 && xp < 50) {level = 2}
@@ -406,6 +426,7 @@ export default new Vuex.Store({
       }
       return level
     },
+    //obter o ranking por numero de eventos inscritos
     getRankingByNumberOfSubscribes(state){
       let topTen = state.users.sort(
         function orderBySubscribes(a, b) {
@@ -416,6 +437,7 @@ export default new Vuex.Store({
       )
       return topTen.reverse()
     },
+    //obter os eventos que ainda nao esteja inscrito
     getNotSubscribedEvents:(state)=>(userId) =>{
       let sendEvents = []
       let verify = false

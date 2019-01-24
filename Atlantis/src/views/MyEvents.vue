@@ -46,6 +46,7 @@ export default {
         this.myEvents = this.$store.getters.getMyEvents(this.idUser)
     },
     methods: {
+        // funcao para remover a inscrição de um evento
         RemoveSubscribe(id){
             let send = {
                 idUser: this.idUser,

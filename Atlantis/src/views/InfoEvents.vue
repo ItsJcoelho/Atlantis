@@ -80,9 +80,11 @@ export default {
         this.userLogged = this.$store.getters.getUserId
     },
     methods: {
+        //obter evento selecionado
         getEvent(id){
             return this.events.filter(event => event.id === id)[0];
         },
+        //adicionar comentário
         addComment(){
             let op = {
                 comment: this.comment,

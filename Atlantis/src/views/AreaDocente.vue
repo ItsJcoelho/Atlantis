@@ -91,6 +91,7 @@ export default {
         this.userEvents = this.$store.getters.GetUserCreatedEvents(this.idUser)
     },
     methods: {
+        //remover o evento
         RemoveEvent(id) {
             let response = confirm("Tem a certeza que pretende eliminar o evento?!");
             if (response) {
@@ -98,6 +99,7 @@ export default {
             }
             this.userEvents = this.$store.getters.GetUserCreatedEvents(this.idUser)
         },
+        //mostrar os participantes do evento selecionado
         ShowUsers(id){
             this.detailsActive = true
             this.chosenEvent = this.userEvents.filter(userEvent => userEvent.id == id)[0];
@@ -105,6 +107,7 @@ export default {
             this.eventParticipants = this.$store.getters.GetEventUsers(this.chosenEvent.participants)
             console.log(this.eventParticipants)
         },
+        //fechar div dos participantes do evento
         close(){
             this.detailsActive = false
             this.eventParticipant = []

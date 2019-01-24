@@ -72,6 +72,7 @@ export default {
     this.challenges = this.$store.getters.GetChallenges
   },
   methods: {
+      //Função para registo
       signUp() {
           let user = {
               id: this.id,

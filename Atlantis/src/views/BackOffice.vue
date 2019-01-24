@@ -66,10 +66,12 @@ export default {
         this.users = this.$store.getters.getUsers
     },
     methods: {
+        //activar a div de edição de permissões 
         Activate(id){
             this.activeEdit = true
             this.changeId = id
         },
+        //função para ativar tipo
         ChangeType(){
             let send = {
                 userId: this.changeId,
@@ -78,6 +80,7 @@ export default {
             this.$store.dispatch("change_type",send)
             alert("Mudança Feita")
         },
+        //funcao para fechar div de edição de permissões
         Close(){
             this.activeEdit = false;
             this.changeId = 0;
