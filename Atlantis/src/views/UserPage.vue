@@ -119,6 +119,7 @@ export default {
             }
         }
         this.level = this.$store.getters.getUserLevel(this.thisUser.xp)
+        console.log(this.thisUser.xp)
         
         
 

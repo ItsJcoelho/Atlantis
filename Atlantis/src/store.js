@@ -389,7 +389,7 @@ export default new Vuex.Store({
       if (xp > 210 && xp < 260) {level = 6}
       if (xp > 260 && xp < 310) {level = 7}
       if (xp > 310 && xp < 360) {level = 8}
-      if (xp > 410 && xp < 460) {level = 9}
+      if (xp > 360 && xp < 460) {level = 9}
       if (xp > 460 && xp < 510) {level = 10}
       if (xp > 510 && xp < 560) {level = 11}
       if (xp > 560 && xp < 610) {level = 12}
