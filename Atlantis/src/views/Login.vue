@@ -33,6 +33,8 @@
 </template>
 <script>
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
+import swal from "sweetalert"
 export default {
   data: function() {
     return {
@@ -45,20 +47,43 @@ export default {
   },
   methods: {
       //função para logar 
-      login() {
+      async login() {
           let userObject = {
               email: this.email,
               pass: this.pass,
           }
-          let loginConfirm = this.$store.getters.login(userObject)
-          console.log(loginConfirm)
-          if(loginConfirm.idUser != 0){
-              alert("Bem-vindo")
+          /*return new Promise((resolve, reject) => {
+                api.post('https://cors-anywhere.herokuapp.com/https://atlantis-itsjcoelho11.c9users.io/auth',{email:userObject.email,password:userObject.pass}).then((response) => {
+                    console.log(response);
+                    resolve();
+                }).catch((error) => {
+                    console.log(error)
+                })
+          });*/
+          let loginConfirm = ""
+          await api.post("https://atlantisbyesmad.herokuapp.com/auth",{email:userObject.email,password:userObject.pass})
+            .then(function(response){
+                loginConfirm = response.data
+            })
+            .catch(function(err){
+                loginConfirm = err.response.data
+                console.log(err.response.data)
+            })
+          if(loginConfirm != "Incorrect email or password."){
+              await swal({
+                title: "Bem Vindo",
+                text: "Será direcionado para o catálogo",
+                icon: "success",
+              })
               this.$store.dispatch("set_user_info",loginConfirm)
               this.$router.push({name: "home"})
           }
           else{
-              alert("error")
+              await swal({
+                title: "Erro",
+                text: "Credenciais Erradas",
+                icon: "warning",
+              })
           }
       }
   }

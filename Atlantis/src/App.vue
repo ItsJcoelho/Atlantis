@@ -62,28 +62,7 @@ export default {
     }
   },
   created() {
-    /*let sendState = {
-      events: JSON.parse(localStorage.getItem("events")),
-      users: JSON.parse(localStorage.getItem("users")),
-      courses: JSON.parse(localStorage.getItem("courses")),
-      categories: JSON.parse(localStorage.getItem("categories")),
-      notifications: JSON.parse(localStorage.getItem("notifications")),
-      challlenges: JSON.parse(localStorage.getItem("challenges")),
-      userId: JSON.parse(localStorage.getItem("userId")),
-      userType: JSON.parse(localStorage.getItem("userType"))
-    }
-    this.$store.dispatch("set_state", sendState)
-    this.state = this.$store.getters.getState*/
-  },
-  beforeDestroy() {
-    /*localStorage.setItem("events", JSON.stringify(this.state.events));
-    localStorage.setItem("users", JSON.stringify(this.state.users));
-    localStorage.setItem("courses", JSON.stringify(this.state.courses));
-    localStorage.setItem("categories", JSON.stringify(this.state.categories));
-    localStorage.setItem("notifications", JSON.stringify(this.state.notifications));
-    localStorage.setItem("challlenges", JSON.stringify(this.state.challenges));
-    localStorage.setItem("userId", JSON.stringify(this.state.userId));
-    localStorage.setItem("userType", JSON.stringify(this.state.userType));*/
+    
   },
 }
 </script>
@@ -111,10 +90,20 @@ export default {
   color: #6099A6;
 }
 body{
-  background-color:#EBF2F1;
+  background-color:#D2E3DD;
 }
-h1{
-  color: #025E73;
+h2 {
+  color: #5A877B;
+  text-align: left
+}
+h3 {
+  text-align: left
+}
+h5 {
+  text-align: left
+}
+h6 {
+  text-align: left
 }
 .card{
   text-align: center;
@@ -155,6 +144,7 @@ li {
   margin-bottom: 5px
 }
 nav{
+  background: #5A877B;
   margin-top: -20px
 }
 .info{
@@ -168,6 +158,26 @@ nav{
 .inside{
   width:10%;
   height:10%;
+}
+.sectio {
+    width: 100%;
+    height: 100%;
+    margin: left;
+    background: white;
+    padding: 0px;
+}
+.one {
+    width: 25%;
+    height: 200px;
+    float: left;
+}
+.two {
+    margin-left: 28%;
+    height: 430px;
+}
+#commentL{
+    text-align: left;
+    color: #5A877B;
 }
 </style>
 

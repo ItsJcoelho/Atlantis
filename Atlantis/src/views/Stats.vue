@@ -26,6 +26,7 @@
 <script>
 import navBar from "@/components/navBar.vue";
 import Chart from 'chart.js';
+import api from '@/api/api.js';
 export default {
     data() {
         return {
@@ -38,12 +39,51 @@ export default {
     components:{
         navBar
     },
-    mounted() {
+    async mounted() {
         //obter labels para os graficos
-        this.labelsCourses = this.$store.getters.GetArrayCoursesNamesForGrafs
-        this.numbersCourses = this.$store.getters.GetDataCoursesForCharts
-        this.labelsCategories = this.$store.getters.GetArrayCategoriesNamesForGrafs
-        this.numbersCategories = this.$store.getters.GetDataCategoriesForCharts
+        let courses = []
+        let categories = []
+        let events = []
+        await api.get("https://atlantisbyesmad.herokuapp.com/events").then(function (response) {
+            events = response.data
+        })
+        await api.get("https://atlantisbyesmad.herokuapp.com/course").then(function (response) {
+            courses = response.data
+        })
+        for (let i = 0; i < courses.length; i++) {
+            this.labelsCourses.push(courses[i].name)
+        }
+        let sendCourses = []
+        let counterCourses = 0
+        for (let i = 0; i < courses.length; i++) {
+            for (let j = 0; j < events.length; j++) {
+                if (courses[i].name == events[j].course) {
+                    counterCourses++
+                }
+            }
+            sendCourses.push(counterCourses)
+            counterCourses = 0
+        }
+        this.numbersCourses = sendCourses
+        await api.get("https://atlantisbyesmad.herokuapp.com/categories").then(function (response) {
+            categories = response.data
+        })
+        for (let i = 0; i < categories.length; i++) {
+            this.labelsCategories.push(categories[i].name)
+        }
+        let sendCategories = []
+        let counterCategories = 0
+        for (let i = 0; i < categories.length; i++) {
+            for (let j = 0; j < events.length; j++) {
+                console.log(`${categories[i].name},${events[j].category}`)
+                if (categories[i].name == events[j].category) {
+                    counterCategories++
+                }
+            }
+            sendCategories.push(counterCategories)
+            counterCategories = 0
+        }
+        this.numbersCategories = sendCategories
         let canvas1 = document.getElementById("myChart1")
         let ctx1 = canvas1.getContext("2d")
         let chart1 = new Chart(ctx1,{

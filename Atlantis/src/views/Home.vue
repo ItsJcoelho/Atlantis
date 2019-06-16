@@ -14,18 +14,18 @@
     <h4>Filtros</h4>
         <div class="row">
             <div class="col-sm-6">
-                <label for="filterCategories">Cursos</label>
+                <label for="filterCategories">Categorias</label>
                 <br>
                 <select class="form-control" id="filterCategories" v-model="filterCategorie">
-                    <option>all</option>
+                    <option></option>
                     <option v-for="(categorie, index) in categories" :key="index">{{categorie.name}}</option>
                 </select>
             </div>
             <div class="col-sm-6">
-                <label for="filterCourses">Categorias</label>
+                <label for="filterCourses">Cursos</label>
                 <br>
                 <select class="form-control" id="filterCourses" v-model="filterCourse">
-                    <option>all</option>
+                    <option></option>
                     <option v-for="(course, index) in courses" :key="index">{{course.name}}</option>
                 </select>
             </div>
@@ -39,8 +39,8 @@
                         <h5 class="card-title">{{event.name}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{event.course}}</h6>
                         <p class="card-text">{{event.category}} com a capacidade de {{event.capacity}} participantes, O orador de este evento é {{event.speaker}}</p>
-                        <a href="#" class="btn btn-outline-success changeBotao" v-if="userLogged != 0" v-on:click="subscribe(event.id)">Inscrever-me</a>
-                        <router-link :to="{ name: 'infoEvents', params: { id: event.id } }" tag="button" :class="{'btn': true, 'btn-outline-info': true}">more info</router-link>
+                        <a href="#" class="btn btn-outline-success changeBotao" v-if="userLogged != 0" v-on:click="subscribe(event._id)">Inscrever-me</a>
+                        <router-link :to="{ name: 'infoEvents', params: { _id: event._id } }" tag="button" :class="{'btn': true, 'btn-outline-info': true}">more info</router-link>
                     </div>
                 </div>
             </div>
@@ -52,6 +52,8 @@
 <script>
 // @ is an alias to /src
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
+import swal from "sweetalert"
 export default {
   name: "home",
   components: {
@@ -67,31 +69,117 @@ export default {
         filterCourse: "all",
     };
   },
-  created() {
+  async created() {
+    var self = this
     //Obtem as informações 
     this.userLogged = this.$store.getters.getUserId
-    this.events = this.$store.getters.getNotSubscribedEvents(this.userLogged)
-    this.categories = this.$store.getters.getCategories
-    this.courses = this.$store.getters.getCourses
+    let verify = false
+    if(this.userLogged == 0){
+        await api.get("https://atlantisbyesmad.herokuapp.com/events").then(function (response) {
+            self.events = response.data
+        })   
+    }
+    else{
+        let verify = false
+        let allEvents = []
+        await api.get("https://atlantisbyesmad.herokuapp.com/events").then(function (response) {
+            allEvents = response.data
+        })
+        let notSubscribedEvents = []
+        for (let i = 0; i < allEvents.length; i++) {
+          for (let j = 0; j < allEvents[i].participants.length; j++) {
+            if(allEvents[i].participants[j] == this.userLogged){
+              verify = true
+            }
+          }
+          if(!verify){
+            notSubscribedEvents.push(allEvents[i])
+          }
+          verify = false
+        }
+        this.events = notSubscribedEvents
+    }
+    await api.get("https://atlantisbyesmad.herokuapp.com/categories").then(function (response) {
+        self.categories = response.data
+    })
+    await api.get("https://atlantisbyesmad.herokuapp.com/course").then(function (response) {
+        self.courses = response.data
+    })
   },
   methods: {
     // metodo para subscrever a um evento
-    subscribe(id){
+    async subscribe(id){
         let subscribeInfo = {
           idUser: this.userLogged,
           idEvent : id
         }
+        
         var confirmation = confirm("Tem a certeza que quer se inscrever neste evento?");
         if (confirmation) {
-           let result = this.$store.getters.subscribe(subscribeInfo)
+            let eventToSubscribe = "o"
+            let result = true
+            let alreadySub = false
+            for (let i = 0; i < this.events.length; i++) {
+                if (this.events[i]._id == subscribeInfo.idEvent) {
+                    eventToSubscribe = this.events[i]
+                }
+            }
+            
+            for (let i = 0; i < eventToSubscribe.participants.length; i++) {
+                if (eventToSubscribe.participants[i] == subscribeInfo.idUser) {
+                    alreadySub = true
+                    result = false 
+                }
+            }
            if(result){
-              alert("subscribe")
-              this.$store.dispatch("set_user_subscribe",subscribeInfo)
-              this.$store.dispatch("give_xp_increase",this.userLogged)
-              this.events = this.$store.getters.getNotSubscribedEvents(this.userLogged)
+              
+              let newList = eventToSubscribe.participants
+              newList.push(subscribeInfo.idUser)
+              await api.put(`https://atlantisbyesmad.herokuapp.com/events/${subscribeInfo.idEvent}`,{participants: newList}).then(function (response) {
+                    console.log(response)
+                    swal({
+                        title: "Sucesso",
+                        text: "Inscrição bem Sucedida",
+                        icon: "success",
+                    })
+              })
+              //this.$store.dispatch("set_user_subscribe",subscribeInfo)
+              let userData = []
+              await api.get(`https://atlantisbyesmad.herokuapp.com/users/${this.userLogged}`).then(function(response){
+                    userData = response.data
+                    userData = userData[0]
+              })
+              let newXp = userData.xp + 50
+              let subscribes = userData.numberInscription + 1
+              await api.put(`https://atlantisbyesmad.herokuapp.com/users/${this.userLogged}`,{xp:newXp,numberInscription:subscribes}).then(function(response){
+                    console.log(response)
+              })
+              let verify = false
+                let allEvents = []
+                await api.get("https://atlantisbyesmad.herokuapp.com/events").then(function (response) {
+                    allEvents = response.data
+                })
+                let notSubscribedEvents = []
+                for (let i = 0; i < allEvents.length; i++) {
+                for (let j = 0; j < allEvents[i].participants.length; j++) {
+                    if(allEvents[i].participants[j] == this.userLogged){
+                    verify = true
+                    }
+                }
+                if(!verify){
+                    notSubscribedEvents.push(allEvents[i])
+                }
+                verify = false
+                }
+                this.events = notSubscribedEvents
+              //this.$store.dispatch("give_xp_increase",this.userLogged)
            }
            else{
-              alert("Já está inscrito")
+              swal({
+                    title: "Atenção",
+                    text: "Já estás inscrito",
+                    icon: "warning",
+                })
            }
         } 
 

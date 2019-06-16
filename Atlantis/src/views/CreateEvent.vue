@@ -64,9 +64,12 @@
 </template>
 <script>
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
+import swal from "sweetalert"
 export default {
     data: function() {
     return {
+        events: [],
         userLogged: 0,
         name: "",
         date:"",
@@ -76,22 +79,33 @@ export default {
         courses: [],
         categories: [],
         selectedCourse: "",
-        selectedCategory:""
+        selectedCategory:"",
+        users: [],
     };
     },
     components: {
         navBar
     },
-    created() {
-        this.courses = this.$store.getters.getCourses
-        this.categories = this.$store.getters.getCategories
+    async created() {
+        var self = this
+        await api.get("https://atlantisbyesmad.herokuapp.com/categories").then(function (response) {
+            self.categories = response.data
+        })
+        await api.get("https://atlantisbyesmad.herokuapp.com/course").then(function (response) {
+            self.courses = response.data
+        })
+        await api.get("https://atlantisbyesmad.herokuapp.com/events").then(function (response) {
+            self.events = response.data
+        })
+        await api.get("https://atlantisbyesmad.herokuapp.com/users").then(function (response) {
+            self.users = response.data
+        })
         this.userLogged = this.$store.getters.getUserId
     },
     methods: {
         //funcao para inserir evento
-        InsertEvent() {
+        async InsertEvent() {
             let event = {
-                id: this.$store.getters.GetLastIdOfEvents,
                 date: this.date,
                 name: this.name,
                 capacity: this.capacity,
@@ -103,14 +117,49 @@ export default {
                 participants: [],
                 comments: []
             }
-            let result = this.$store.getters.verifyEvent(event)
+            let result = true
+            for (let i = 0; i < this.events.length; i++) {
+                if (this.events[i].name == event.name) {
+                    result = false
+                }
+            }
             if(result){
-                this.$store.dispatch("set_new_event",event)
+                await api.post("https://atlantisbyesmad.herokuapp.com/events",event)
+                .then(function (response) {
+                    console.log(response)
+                    swal({
+                        title: "Sucesso",
+                        text: "Evento Criado com sucesso",
+                        icon: "success",
+                    })
+                })
+                .catch(function(err){
+                    console.log(err)
+                })
                 console.log(event)
-                alert("O evento foi criado com sucesso")
+                let ids = []
+                for(let i = 0;i<this.users.length;i++){
+                    ids.push(this.users[i]._id)
+                }
+                let notification = {
+                    name: "Novo Evento",
+                    description: `Foi Criado um novo evento: ${event.name}`,
+                    usersId: ids
+                }
+                await api.post("https://atlantisbyesmad.herokuapp.com/notifications",notification)
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function(err){
+                    console.log(err)
+                })
             }
             else{
-                alert("Existe algum erro, por favor verifique os dados")
+                swal({
+                    title: "Erro",
+                    text: "Evento Criado com sucesso",
+                    icon: "Danger",
+                })
             }
         }
     },

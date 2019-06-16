@@ -1,5 +1,5 @@
 <template>
-<div class="userpage">
+<div class="userpage"v-if="loaded">
     <!-- NAVBAR -->
     <navBar/>
     <br>
@@ -17,7 +17,7 @@
 
         </div>
         <div class="col-sm-9">
-            <h1>{{getUser($route.params.id).name}}</h1>
+            <h1>{{thisUser.name}}</h1>
         </div>
     </div>
     <br>
@@ -26,18 +26,19 @@
         <div class="col-sm-3">
             <ul class="list-group">
                 <li class="list-group-item text-muted">Páginas<i class="fa fa-dashboard fa-1x"></i></li>
-                <li class="list-group-item text-right"><span class="pull-left"><router-link :to="{ name: 'myEvents-user',params: { id: userId } }" :class="{ 'nav-link': true }">Minhas Inscrições</router-link></span></li>
-                <li class="list-group-item text-right" v-if="thisUser.type=='docente'"><span class="pull-left"><router-link :to="{ name: 'areaDocente-user',params: { id: userId } }" :class="{ 'nav-link': true }">Área do Docente</router-link></span></li>
+                <li class="list-group-item text-right"><span class="pull-left"><router-link :to="{ name: 'myEvents-user',params: { _id: userId } }" :class="{ 'nav-link': true }">Minhas Inscrições</router-link></span></li>
+                <li class="list-group-item text-right" v-if="thisUser.type=='docente'"><span class="pull-left"><router-link :to="{ name: 'areaDocente-user',params: { _id: userId } }" :class="{ 'nav-link': true }">Área do Docente</router-link></span></li>
+                <li class="list-group-item text-right"><span class="pull-left"><router-link :to="{ name: 'notificacoes-user',params: { _id: userId } }" :class="{ 'nav-link': true }">Notificações</router-link></span></li>
             </ul>
         </div>
         <div class="col-sm-9 aling-self-center">
             <ul class="list-group">
                 <li class="list-group-item text-muted">Páginas<i class="fa fa-dashboard fa-1x"></i></li>
-                <li class="list-group-item text-left">Email: {{getUser($route.params.id).email}}</li>
+                <li class="list-group-item text-left">Email: {{thisUser.email}}</li>
                 
-                <li class="list-group-item text-left">Password: {{getUser($route.params.id).password}}</li>
+                <li class="list-group-item text-left">Pontos de Experiencia: {{thisUser.xp}}</li>
 
-                <li class="list-group-item text-left">Curso: {{getUser($route.params.id).course}}</li>
+                <li class="list-group-item text-left">Curso: {{thisUser.course}}</li>
                 <li class="list-group-item text-left">Nivel: {{level}}</li>
             </ul>
         </div>
@@ -88,49 +89,84 @@
 
 <script>
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
+import swal from "sweetalert"
 export default {
     data() {
         return {
             users: [],
-            userId: this.$route.params.id,
+            userId: this.$route.params._id,
             thisUser: "",
             userLogged: 0,
             conqueredAchievements: [],
             achivements :[],
             switchAchievements: true,
             switchButton: "Conquistas Completas",
-            level: 0
+            level: 0,
+            loaded: false
         }
     },
     components:{
         navBar
     },
-    created() {
-        this.users = this.$store.getters.getUsers;
-        this.userLogged = this.$store.getters.getUserId;
-        this.thisUser = this.users.filter(user => this.userId == user.id)[0]
+    async created() {
+        var self = this
+        await api.get("https://atlantisbyesmad.herokuapp.com/users").then(function(response){
+            self.users = response.data
+        })
+        this.userLogged = this.$store.getters.getUserId
+        await api.get(`https://atlantisbyesmad.herokuapp.com/users/${this.userLogged}`).then(function(response){
+            self.thisUser = response.data
+        })
+        this.thisUser = this.thisUser[0]
+        console.log(this.thisUser)
         //verifica se completou as conquistas
+        console.log(this.thisUser.challenges.length)
         for(let i = 0; i < this.thisUser.challenges.length; i++){
-            if(this.thisUser.numberInscripton >= this.thisUser.challenges[i].goal && !this.thisUser.challenges[i].completed){
-                this.$store.dispatch("completed_challenge", {
+            if(this.thisUser.numberInscription >= this.thisUser.challenges[i].goal && !this.thisUser.challenges[i].completed){
+                let information = {
+                    userId: this.userId,
+                    challengeId: this.thisUser.challenges[i]._id,
+                    xp: this.thisUser.challenges[i].xpQuantity
+                }
+                for (let k = 0; k < this.users.length; k++) {
+                    if(this.users[k]._id == information.userId){
+                        for (let j = 0; j < this.users[k].challenges.length; j++) {
+                            if (this.users[k].challenges[j]._id == information.challengeId) {
+                                this.users[k].challenges[j].completed = true
+                                console.log(this.users[k].challenges)
+                                this.users[k].xp += information.xp
+                                let newXp = this.users[k].xp
+                                let updateChallenges = this.users[k].challenges
+                                await api.put(`https://atlantisbyesmad.herokuapp.com/users/${this.userLogged}`,{challenges: updateChallenges,xp:newXp}).then(function(response){
+                                    swal({
+                                        title: "Parabéns",
+                                        text: "Desafio concluído",
+                                        icon: "success",
+                                    })
+                                })
+                                
+
+                                
+                            }
+                        }
+                    }
+                }
+                /*this.$store.dispatch("completed_challenge", {
                     userId: this.userId,
                     challengeId: this.thisUser.challenges[i].id,
                     xp: this.thisUser.challenges[i].xpQuantity
-                });
+                });*/
             }
         }
         //devolve o nivel
         this.level = this.$store.getters.getUserLevel(this.thisUser.xp)
         console.log(this.thisUser.xp)
         
-        
+        this.loaded = true
 
     },
     methods: {
-        //obter utilizador logado
-        getUser(id){
-            return this.users.filter(user => user.id == id)[0];
-        },
         //alternar entre conquistas completas e por completar
         alternate() {
             if(this.switchAchievements){

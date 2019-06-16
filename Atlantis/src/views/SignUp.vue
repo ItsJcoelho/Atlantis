@@ -49,6 +49,8 @@
 </template>
 <script>
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
+import swal from "sweetalert"
 export default {
   data: function() {
     return {
@@ -66,16 +68,26 @@ export default {
   components: {
       navBar
   },
-  created() {
-    this.courses = this.$store.getters.getCourses
+  async created() {
+    var self = this;
+    await api.get("https://atlantisbyesmad.herokuapp.com/course").then(function (response) {
+        console.log(response.data)
+        self.courses = response.data
+    })
+    // console.log(this.courses)
     this.id = this.$store.getters.getLastIdOfUsers
-    this.challenges = this.$store.getters.GetChallenges
+    await api.get("https://atlantisbyesmad.herokuapp.com/challenges").then(function (response) {
+        //console.log(response.data)
+        self.challenges = response.data
+    })
   },
   methods: {
       //Função para registo
-      signUp() {
+      async signUp() {
+          let msg = ""
+          let signUpInfo = ""
           let user = {
-              id: this.id,
+              //id: this.id,
               name: this.name,
               email: this.email,
               password: this.pass,
@@ -86,15 +98,57 @@ export default {
               type: "normal",
               numberInscripton: 0
           }
-          let signUpInfo = this.$store.getters.signUp(user)
+          let users = []
+          await api.get("https://atlantisbyesmad.herokuapp.com/users").then(function (response) {
+            users = response.data
+            console.log(users)
+          })
+          for (let i = 0; i < users.length; i++) {
+                console.log("1")
+                if(users[i].email == user.email){
+                    msg += "error"
+                }
+          }
+          //verificar se existe se as password coicidem
+          if(user.password != user.confirmPass) {
+              msg += "error"
+          }
+          if(msg == ""){
+              signUpInfo = {
+              //id: createUser.id,
+              name: user.name,
+              email: user.email,
+              password: user.password,
+              course: user.course,
+              xp: user.xp,
+              challenges: user.challenges,
+              type: user.type,
+              numberInscription: user.numberInscripton
+              }
+          }
           console.log(signUpInfo)
           if(signUpInfo != ""){
-            alert("Bem vindo ao Atlantis, Irá ser direcionado á zona de login")
-            this.$store.dispatch("set_new_user",signUpInfo)
+            await api.post("https://atlantisbyesmad.herokuapp.com/users",signUpInfo)
+            .then(function (response) {
+                console.log(response)
+                swal({
+                    title: "Bem vindo ao Atlantis",
+                    text: "Irá ser direcionado para o login",
+                    icon: "success",
+                })
+            })
+            .catch(function(err){
+                console.log(err)
+            })
+            //this.$store.dispatch("set_new_user",signUpInfo)
             this.$router.push({name: "login"})
           }
           else {
-            alert("O seu registo contem erros, verifique os seus dados")
+            swal({
+                    title: "Atenção",
+                    text: "Tens informações que podem conter erros",
+                    icon: "danger",
+            })
           }
           
       }

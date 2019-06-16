@@ -41,14 +41,14 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nome</th>
-                    <th scope="col">XP</th>
+                    <th scope="col">Nº de inscrições</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(userNumber, index) in showTopNumber" :key="index">
                     <th>{{index + 1 }}</th>
                     <td>{{userNumber.name}}</td>
-                    <td>{{userNumber.numberInscripton}}</td>
+                    <td>{{userNumber.numberInscription}}</td>
                 </tr>
             </tbody>
         </table>
@@ -57,9 +57,11 @@
 </template>
 <script>
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
 export default {
     data: function() {
     return {
+        users: [],
         usersXp: [],
         usersNumber: [],
         showTopXp: [],
@@ -72,8 +74,20 @@ export default {
     components: {
         navBar
     },
-    created() {
-        this.usersXp = this.$store.getters.getRankingByXp(top)
+    async created() {
+        var self = this
+        await api.get("https://atlantisbyesmad.herokuapp.com/users").then(function(response){
+            self.users = response.data
+        })
+        let topTen = this.users.sort(
+            function orderByXp(a, b) {
+                if (a.xp > b.xp) return 1;
+                if (a.xp < b.xp) return -1;
+                else return 0;
+            }
+        )
+        topTen.reverse()
+        this.usersXp = topTen.reverse()
         console.log(this.usersXp)
         //verifica se a quantidade de utilizadores é menor que 10 caso nao exista mais que 10 users
         if(this.usersXp.length < 10){
@@ -84,7 +98,14 @@ export default {
                 this.showTopXp.push(this.usersXp[i])
             }
         }
-        this.usersNumber = this.$store.getters.getRankingByNumberOfSubscribes
+        let topTenN = this.users.sort(
+            function orderBySubscribes(a, b) {
+                    if (a.numberInscription > b.numberInscription) return 1;
+                    if (a.numberInscription < b.numberInscription) return -1;
+                    else return 0;
+                }
+            )
+        this.usersNumber = topTenN.reverse()
         console.log(this.usersNumber)
         if(this.usersNumber.length < 10){
             this.showTopNumber = this.usersNumber

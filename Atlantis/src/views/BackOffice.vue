@@ -12,6 +12,9 @@
         </div>
     <br>
         <h1>Espaço do Administrador</h1>
+        <br>
+        <h1>Utilizadores</h1>
+        <br>
         <table class="table">
             <thead>
                 <tr>
@@ -26,7 +29,7 @@
                     <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.type}}</td>
-                    <td><button type="button" class="btn btn-success" v-on:click="Activate(user.id)">Editar</button></td>
+                    <td><button type="button" class="btn btn-success" v-on:click="Activate(user._id)">Editar</button><button type="button" class="btn btn-danger" v-on:click="removeUser(user._id)">Remover</button></td>
                 </tr>
             </tbody>
         </table>
@@ -44,12 +47,15 @@
             <br>
             <button type="button" class="btn btn-danger" v-on:click="Close()">Fechar</button>
             <button type="button" class="btn btn-success" v-on:click="ChangeType()">Editar</button>
-
+        </div>
+        <div class="categories">
         </div>
     </div>
 </template>
 <script>
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
+import swal from "sweetalert"
 export default {
     data() {
         return {
@@ -62,8 +68,11 @@ export default {
     components: {
       navBar
     },
-    created() {
-        this.users = this.$store.getters.getUsers
+    async created() {
+        var self = this
+        await api.get("https://atlantisbyesmad.herokuapp.com/users").then(function(response){
+            self.users = response.data
+        })
     },
     methods: {
         //activar a div de edição de permissões 
@@ -72,18 +81,43 @@ export default {
             this.changeId = id
         },
         //função para ativar tipo
-        ChangeType(){
+        async ChangeType(){
             let send = {
                 userId: this.changeId,
                 type: this.changeType
             }
-            this.$store.dispatch("change_type",send)
-            alert("Mudança Feita")
+            console.log(send.userId)
+            await api.put(`https://atlantisbyesmad.herokuapp.com/users/${send.userId}`,{type: send.type}).then(function(response){
+                swal({
+                    title: "Sucesso",
+                    text: "Permissões alteradas com sucesso",
+                    icon: "success",
+                })
+            })
+            location.reload()
         },
         //funcao para fechar div de edição de permissões
         Close(){
             this.activeEdit = false;
             this.changeId = 0;
+        },
+        async removeUser(id){
+            const confirmation = await confirm("Tem a certeza que pretende remover este utilizador?")
+            if(confirmation){
+                await api.remove(`https://atlantisbyesmad.herokuapp.com/users/${id}`).then(function(response){
+                    swal({
+                        title: "Sucesso",
+                        text: "Utilizador Removido",
+                        icon: "success",
+                    })
+
+                })
+                for(let i = 0; i < this.users.length; i++){
+                    if(this.users[i]._id == id){
+                        this.users.splice(i,1)
+                    }
+                }
+            }
         }
     },
 }

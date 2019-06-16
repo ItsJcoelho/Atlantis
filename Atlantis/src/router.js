@@ -11,6 +11,7 @@ import UserPage from "./views/UserPage.vue"
 import BackOffice from "./views/BackOffice.vue"
 import MyEvents from "./views/MyEvents.vue"
 import AreaDocente from "./views/AreaDocente.vue"
+import Notifications from "./views/Notifications.vue"
 
 Vue.use(Router);
 
@@ -47,12 +48,12 @@ export default new Router({
       component: CreateEvent
     },
     {
-      path: "/infoEvents/:id",
+      path: "/infoEvents/:_id",
       name: "infoEvents",
       component: InfoEvents
     },
     {
-      path: "/userPage/:id",
+      path: "/userPage/:_id",
       name: "userPage",
       component: UserPage,
 
@@ -63,14 +64,19 @@ export default new Router({
       component: BackOffice
     },
     {
-      path: "/myEvents/:id",
+      path: "/myEvents/:_id",
       name: "myEvents-user",
       component: MyEvents
     },
     {
-      path: "/areaDocente/:id",
+      path: "/areaDocente/:_id",
       name: "areaDocente-user",
       component: AreaDocente
+    },
+    {
+      path: "/notificações/:_id",
+      name: "notificacoes-user",
+      component: Notifications
     }
   ]
 });

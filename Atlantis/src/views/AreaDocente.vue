@@ -22,9 +22,9 @@
                             <h5 class="card-title">{{userEvent.name}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{userEvent.course}}</h6>
                             <p class="card-text">{{userEvent.category}} com a capacidade de {{userEvent.capacity}} participantes, O orador de este evento é {{userEvent.speaker}}</p>
-                            <a v-on:click="RemoveEvent(userEvent.id)" class="btn btn-outline-danger">Remover Evento</a>
+                            <a v-on:click="RemoveEvent(userEvent._id)" class="btn btn-outline-danger">Remover Evento</a>
                             <br>
-                            <a v-on:click="ShowUsers(userEvent.id)" class="btn btn-outline-info">Mostrar Detalhe</a>
+                            <a v-on:click="ShowUsers(userEvent._id)" class="btn btn-outline-info">Mostrar Detalhe</a>
                         </div>
                     </div>
                 </div>
@@ -74,10 +74,12 @@
 </template>
 <script>
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
+import swal from "sweetalert"
 export default {
     data() {
         return {
-            idUser: this.$route.params.id,
+            idUser: this.$route.params._id,
             userEvents: [],
             chosenEvent: "",
             detailsActive: false,
@@ -87,17 +89,45 @@ export default {
     components: {
         navBar
     },
-    created() {
-        this.userEvents = this.$store.getters.GetUserCreatedEvents(this.idUser)
+    async created() {
+        let allEvents = []
+        let sendEvents = []
+        await api.get("https://atlantisbyesmad.herokuapp.com/events").then(function(response){
+            allEvents = response.data
+        })
+        for (let i = 0; i < allEvents.length; i++) {
+            if (allEvents[i].creatorId == this.idUser) {
+                sendEvents.push(allEvents[i])
+            }
+        }
+        this.userEvents = sendEvents
     },
     methods: {
         //remover o evento
-        RemoveEvent(id) {
+        async RemoveEvent(id) {
             let response = confirm("Tem a certeza que pretende eliminar o evento?!");
             if (response) {
-                this.$store.dispatch("remove_event",id)
+                await api.remove(`https://atlantisbyesmad.herokuapp.com/events/${id}`).then(function(response){
+                    swal({
+                        title: "Sucesso",
+                        text: "O evento foi cancelado com sucesso",
+                        icon: "success",
+                    })
+                })
+                let thisEvent
+                await api.get(`https://atlantisbyesmad.herokuapp.com/events/${id}`).then(function(response){
+                    thisEvent = response.data[0]
+                })
+                let notification = {
+                    name:"Evento Cancelado",
+                    description: `Pedimos desculpa mas o evento ${thisEvent.name} foi cancelado`,
+                    usersId: thisEvent.participants
+                }
+                await api.post(`https://atlantisbyesmad.herokuapp.com/notifications`,notification).then(function(response){
+                    console.log()
+                })
             }
-            this.userEvents = this.$store.getters.GetUserCreatedEvents(this.idUser)
+            location.reload()
         },
         //mostrar os participantes do evento selecionado
         ShowUsers(id){

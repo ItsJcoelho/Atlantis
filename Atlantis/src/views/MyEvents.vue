@@ -21,7 +21,7 @@
                             <h5 class="card-title">{{myEvent.name}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{myEvent.course}}</h6>
                             <p class="card-text">{{myEvent.category}} com a capacidade de {{myEvent.capacity}} participantes, O orador de este evento é {{myEvent.speaker}}</p>
-                            <a v-on:click="RemoveSubscribe(myEvent.id)" class="btn btn-outline-danger">Remover Inscrição</a>
+                            <a v-on:click="RemoveSubscribe(myEvent._id)" class="btn btn-outline-danger">Remover Inscrição</a>
                         </div>
                     </div>
                 </div>
@@ -31,10 +31,13 @@
 </template>
 <script>
 import navBar from "@/components/navBar.vue";
+import api from "@/api/api.js"
+import swal from "sweetalert"
 export default {
     data() {
         return {
-            idUser: this.$route.params.id,
+            idUser: this.$route.params._id,
+            events: [],
             myEvents: []
             
         }
@@ -42,21 +45,57 @@ export default {
     components: {
         navBar
     },
-    created() {
-        this.myEvents = this.$store.getters.getMyEvents(this.idUser)
+    async created() {
+        var self = this
+        await api.get("https://atlantisbyesmad.herokuapp.com/events").then(function(response){
+            self.events = response.data
+        })
+        for (let i = 0; i < this.events.length; i++) {
+            for (let j = 0; j < this.events[i].participants.length; j++) {
+                if (this.events[i].participants[j] == this.idUser) {
+                    this.myEvents.push(this.events[i])
+                }
+            }
+        }
+        
     },
     methods: {
         // funcao para remover a inscrição de um evento
-        RemoveSubscribe(id){
+        async RemoveSubscribe(id){
             let send = {
                 idUser: this.idUser,
                 idEvent: id
             }
             let response = confirm("Tem a certeza que pretende eliminar a sua inscrição?!");
             if (response) {
-                this.$store.dispatch("remove_subscribe",send)
+                for (let i = 0; i < this.events.length; i++) {
+                    if(this.events[i]._id == send.idEvent){
+                        for (let j = 0; j < this.events[i].participants.length; j++) {
+                            console.log(2)
+                            if (this.events[i].participants[j] == send.idUser) {
+                                console.log("hi")
+                                this.events[i].participants.splice(j,1)
+                                await api.put(`https://atlantisbyesmad.herokuapp.com/events/${send.idEvent}`,{participants: this.events[i].participants}).then(function(response){
+                                    swal({
+                                        title: "Cancelado",
+                                        text: "Inscrição Cancelada",
+                                        icon: "success",
+                                    })
+                                })
+                                
+                            }
+                        }
+                    }
+                }
             }
-            this.myEvents = this.$store.getters.getMyEvents(this.idUser)
+            this.myEvents = []
+            for (let i = 0; i < this.events.length; i++) {
+                for (let j = 0; j < this.events[i].participants.length; j++) {
+                    if (this.events[i].participants[j] == this.idUser) {
+                        this.myEvents.push(this.events[i])
+                    }
+                }
+            }
             
         }
     },

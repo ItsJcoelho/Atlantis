@@ -1,6 +1,6 @@
 <template>
     
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark ">
         <a class="navbar-brand" href="#">ATLANTIS</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -30,7 +30,7 @@
                 <router-link :to="{ name: 'stats' }" :class="{ 'nav-link': true }">Estatística</router-link>
             </li>
             <li class="nav-item" v-if="userLogged != 0">
-                <router-link :to="{ name: 'userPage', params: { id: userLogged } }" :class="{ 'nav-link': true }">Página Utilizador</router-link>
+                <router-link :to="{ name: 'userPage', params: { _id: userLogged } }" :class="{ 'nav-link': true }">Página Utilizador</router-link>
             </li>
             <li class="nav-item" v-if="userType == 'admin'">
                 <router-link :to="{ name: 'backOffice' }" :class="{ 'nav-link': true }">BackOffice</router-link>
