@@ -83,7 +83,8 @@ export default {
             userEvents: [],
             chosenEvent: "",
             detailsActive: false,
-            eventParticipants: []
+            eventParticipants: [],
+            users: []
         }
     },
     components: {
@@ -92,8 +93,12 @@ export default {
     async created() {
         let allEvents = []
         let sendEvents = []
+        var self = this
         await api.get("https://atlantisbyesmad.herokuapp.com/events").then(function(response){
             allEvents = response.data
+        })
+        await api.get("https://atlantisbyesmad.herokuapp.com/users").then(function(response){
+            self.users = response.data
         })
         for (let i = 0; i < allEvents.length; i++) {
             if (allEvents[i].creatorId == this.idUser) {
@@ -130,17 +135,31 @@ export default {
             location.reload()
         },
         //mostrar os participantes do evento selecionado
-        ShowUsers(id){
+        async ShowUsers(id){
             this.detailsActive = true
-            this.chosenEvent = this.userEvents.filter(userEvent => userEvent.id == id)[0];
+            var self = this
+            await api.get(`https://atlantisbyesmad.herokuapp.com/events/${id}`).then(function(response){
+                self.chosenEvent = response.data[0]
+            })
+            .catch(function(err){
+                console.log(err)
+            })
             console.log(this.chosenEvent.participants)
-            this.eventParticipants = this.$store.getters.GetEventUsers(this.chosenEvent.participants)
+            let send = []
+            for (let i = 0; i < this.chosenEvent.participants.length; i++) {
+                for (let j = 0; j < this.users.length; j++) {
+                    if (this.chosenEvent.participants[i] == this.users[j]._id) {
+                        send.push(this.users[j])
+                    }
+                }
+            }
+            this.eventParticipants = send
             console.log(this.eventParticipants)
         },
         //fechar div dos participantes do evento
         close(){
             this.detailsActive = false
-            this.eventParticipant = []
+            this.eventParticipants = []
         }
 
     },

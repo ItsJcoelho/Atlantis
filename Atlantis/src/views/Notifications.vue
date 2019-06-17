@@ -64,14 +64,7 @@ export default {
             verify = false
         }
         this.loading = true
-    },
-    methods: {
-        async remove(id){
-           await api.put().then(function(response){
-
-           }) 
-        }
-    },
+    }
 
 }
 </script>
